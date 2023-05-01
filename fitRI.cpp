@@ -26,7 +26,7 @@ TCanvas *cG1f = new TCanvas("R_I","rate(I)",200,10,600,400);
 cG1f->SetFillColor(0);
 cG1f->cd();
 //TMultiGraph *mg = new TMultiGraph();
-TGraphErrors *gG1f = new TGraphErrors(29,rate,I,err_rate,err_I);
+TGraphErrors *gG1f = new TGraphErrors(29,I,rate,err_I,err_rate);
 gG1f->SetMarkerSize(0.6);
 gG1f->SetMarkerStyle(21);
 gG1f->SetTitle("rate(I)");
@@ -34,14 +34,13 @@ gG1f->GetXaxis()->SetTitle("I");
 gG1f->GetYaxis()->SetTitle("rate");
 gG1f->Draw("AP");
 
-cout << "\n\n --- Ipotesi  [0] --- \n" <<endl;
+cout << "\n\n --- Ipotesi  [0]*x+[1] --- \n" <<endl;
 
+float start = 0.180;
+float stop = 0.50;
+TF1 *funz2 = new TF1("funz1","[0]*x+[1]",start, stop);
 
-/*float start = 470;
-float stop = 540;
-TF1 *funz1 = new TF1("funz1","[0]",start, stop);
-
-float r;
+/*float r;
 float x_medio = 0;
 float y_medio = 0;
 int misure = 0;
@@ -73,13 +72,25 @@ for (int i=0;i<51;i++){
 
 r=xy_scarti/pow(x_SQM*y_SQM,0.5);
 
-
+*/
 funz1->SetParameter(0,1000.);
-funz1->SetParameter(1,0.);
+funz1->SetParameter(1,0.25);
 gG1f->Fit(funz1,"RM+");
-cout << "Chi^2:" << funz1->GetChisquare() << ", number of DoF: " << funz1->GetNDF() << " (Probability: " << funz1->GetProb() << "). r ="<< r << endl;
+cout << "Chi^2:" << funz1->GetChisquare() << ", number of DoF: " << funz1->GetNDF() << " (Probability: " << funz1->GetProb() << endl;
+
+TF1 *funz2 = new TF1("funz2","[0]/(1+exp((x-[1])/[2]))+[3]",0.55,2.570);// 2.9361 sarebbe il rate di fondo
+
+  funz2->SetParameter(0,2.18626e+003);
+  funz2->SetParameter(1, 6.74578e-001);
+  funz2->SetParameter(2,-3.43136e-001);
+  funz2->SetParameter(3, 5.49379e+002);
+  funz2->SetLineColor(3);
 
 
+  gG1f->Fit(funz2,"RM+");
+  cout << "X^2: " << funz2->GetChisquare() << ", gradi di liberta': " << funz2->GetNDF() << " (p-value: " << funz2->GetProb() << ")." << endl;
+
+/*
 start = 420;
 stop = 445;
 TF1 *funz2 = new TF1("funz2","[0]+[1]*x",start,stop);
