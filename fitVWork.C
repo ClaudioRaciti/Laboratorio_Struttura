@@ -33,6 +33,7 @@ TCanvas *cG1f = new TCanvas("V_work","rate(V)",200,10,600,400);
 // cG1f->SetLogx(1);
 cG1f->SetFillColor(0);
 cG1f->cd();
+TMultiGraph *mg = new TMultiGraph();
 TGraphErrors *gG1f = new TGraphErrors(51,HV_work,rate,err_HV_work,err_rate);
 gG1f->SetMarkerSize(0.6);
 gG1f->SetMarkerStyle(21);
@@ -128,6 +129,26 @@ cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetND
 float intersection; 
 intersection=(funz1->GetParameter(0)-funz2->GetParameter(0))/funz2->GetParameter(1);
 cout<<"intersection at:"<<intersection<<endl;
+
+
+// start = 420;
+// stop = 500;
+// TF1 *funz3 = new TF1("funz3","[0]/(1+exp(([1]-x)/[2]))",start,stop);
+// funz3->SetParameter(0,1000.);
+// funz3->SetParameter(1,450.);
+// funz3->SetParameter(2,5.);
+// gG1f->Fit(funz3,"RM+");
+// cout << "Chi^2:" << funz3->GetChisquare() << ", number of DoF: " << funz3->GetNDF() 
+//     << " (Probability: " << funz3->GetProb() << ")."<< endl;
+    
+
+TF1 *retta1 = new TF1("retta1"," 1.47047e+003",420,540);
+TF1 *retta2 = new TF1("retta2","-1.44106e+004+3.54466e+001*x",420,460);
+
+
+retta1->Draw("same");
+retta2->Draw("same");
+
 }
 
 
