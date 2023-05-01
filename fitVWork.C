@@ -38,7 +38,7 @@ TGraphErrors *gG1f = new TGraphErrors(51,HV_work,rate,err_HV_work,err_rate);
 gG1f->SetMarkerSize(0.6);
 gG1f->SetMarkerStyle(21);
 gG1f->SetTitle("rate(V)");
-gG1f->GetXaxis()->SetTitle("log(V)");
+gG1f->GetXaxis()->SetTitle("V");
 gG1f->GetYaxis()->SetTitle("rate");
 gG1f->Draw("AP");
 
