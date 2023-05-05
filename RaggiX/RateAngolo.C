@@ -43,7 +43,7 @@ cG1f->cd();
 TGraphErrors *gG1f = new TGraphErrors(n_misure,angolo,rate,err_angolo,err_rate);
 gG1f->SetMarkerSize(0.6);
 gG1f->SetMarkerStyle(21);
-gG1f->SetTitle("Rate(theta) di K_alpha con Nichel");
+gG1f->SetTitle("Rate(theta) K alpha NaCl");
 gG1f->GetXaxis()->SetTitle("theta [rad]");
 gG1f->GetYaxis()->SetTitle("rate [conteggi/s]");
 gG1f->Draw("AP");
@@ -105,17 +105,16 @@ cout<<endl;
 float theta=funz1->GetParameter(1);
 float stheta=funz1->GetParError(1);
 
-cout<<"l'angolo per il quale si ha il picco è: ("<<theta<<"±"<<stheta<<") rad"<<endl;
+cout<<"l'angolo per il quale si ha il picco e': ("<<theta<<"+-"<<stheta<<") rad"<<endl;
 
-float lambda=0.154; //nm lunghezza d'onda della radiazione K-alpha (K-beta e il fondo sono stati rimossi mediante un filtro)
-
+float lambda=0.154; //nm lunghezza d'onda della radiazione K-alpha 
 float d=lambda/(2*sin(theta));
 
 float sd=abs((lambda/2)*cos(theta)/pow(sin(theta),2))*stheta;
 
 cout<<endl;
-cout<<"la distanza interplanare d vale: ("<<d<<"±"<<sd<<") nm"<<endl;
-/*
+cout<<"la distanza interplanare d vale: ("<<d<<"+-"<<sd<<") nm"<<endl;
+
 
 
 float angolo2[] ={0.3577924967,0.3665191429,0.3752457892,0.3767031391,0.3781517624,
@@ -144,8 +143,8 @@ cG2f->cd();
 TGraphErrors *gG2f = new TGraphErrors(26,angolo2,rate2,err_angolo2,err_rate2);
 gG2f->SetMarkerSize(0.6);
 gG2f->SetMarkerStyle(21);
-gG2f->SetTitle("Rate(E) di K_beta con Nichel");
-gG2f->GetXaxis()->SetTitle("E [eV]");
+gG2f->SetTitle("Rate(theta) K alpha FLi");
+gG2f->GetXaxis()->SetTitle("theta [rad]");
 gG2f->GetYaxis()->SetTitle("rate");
 gG2f->Draw("AP");
 float start = 0.38;
@@ -160,7 +159,7 @@ funz2->SetParLimits(2,0.,5.);
 funz2->SetParLimits(3,0.,30.);
 gG2f->Fit(funz2,"RM+");
 cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetNDF() << " (Probability: " << funz2->GetProb() << ")."<< endl;
-*/
+
 
 }
 
