@@ -159,6 +159,18 @@ funz2->SetParLimits(2,0.,5.);
 funz2->SetParLimits(3,0.,30.);
 gG2f->Fit(funz2,"RM+");
 cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetNDF() << " (Probability: " << funz2->GetProb() << ")."<< endl;
+float theta=funz2->GetParameter(1);
+float stheta=funz2->GetParError(1);
+
+cout<<"l'angolo per il quale si ha il picco e': ("<<theta<<"+-"<<stheta<<") rad"<<endl;
+
+float lambda=0.154; //nm lunghezza d'onda della radiazione K-alpha 
+float d=lambda/(2*sin(theta));
+
+float sd=abs((lambda/2)*cos(theta)/pow(sin(theta),2))*stheta;
+
+cout<<endl;
+cout<<"la distanza interplanare d vale: ("<<d<<"+-"<<sd<<") nm"<<endl;
 
 
 }
