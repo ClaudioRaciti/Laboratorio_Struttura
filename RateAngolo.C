@@ -15,6 +15,8 @@ using namespace std;
 
 void RateAngolo(){
 
+int n_misure=20;
+
 float angolo [] = {0.2574360647,0.2588934146,0.2603420379,0.2617993878,0.2632567377,
             0.264705361,0.2661627109,0.2676200609,0.2690686841,0.2705260341,0.271983384,
             0.273432007,0.2748893572,0.2763467071,0.2777953304,0.2792526803,0.2807100302,
@@ -38,12 +40,12 @@ TCanvas *cG1f = new TCanvas("V_work","rate(V)",200,10,600,400);
 // cG1f->SetLogx(1);
 cG1f->SetFillColor(0);
 cG1f->cd();
-TGraphErrors *gG1f = new TGraphErrors(20,angolo,rate,err_angolo,err_rate);
+TGraphErrors *gG1f = new TGraphErrors(n_misure,angolo,rate,err_angolo,err_rate);
 gG1f->SetMarkerSize(0.6);
 gG1f->SetMarkerStyle(21);
-gG1f->SetTitle("Rate(E) di K_alpha con Nichel");
-gG1f->GetXaxis()->SetTitle("E [eV]");
-gG1f->GetYaxis()->SetTitle("rate");
+gG1f->SetTitle("Rate(theta) di K_alpha con Nichel");
+gG1f->GetXaxis()->SetTitle("theta [rad]");
+gG1f->GetYaxis()->SetTitle("rate [conteggi/s]");
 gG1f->Draw("AP");
 
 cout << "\n\n --- Ipotesi  [0] --- \n" <<endl;
@@ -51,7 +53,7 @@ cout << "\n\n --- Ipotesi  [0] --- \n" <<endl;
 
 float start = 0.255;
 float stop = 0.29;
-TF1 *funz1 = new TF1("funz1","[0]*exp(-pow([1]-x,2)/(2*[2]))+[3]",start, stop);
+TF1 *funz1 = new TF1("funz1","[0]*exp(-pow([1]-x,2)/(2*[2]*[2]))+[3]",start, stop);
 
 // float r;
 // float x_medio = 0;
@@ -88,12 +90,32 @@ TF1 *funz1 = new TF1("funz1","[0]*exp(-pow([1]-x,2)/(2*[2]))+[3]",start, stop);
 
 funz1->SetParameter(0,35.);
 funz1->SetParameter(1,0.272);
-funz1->SetParameter(2,0.);
+funz1->SetParameter(2,3e-3);
 funz1->SetParameter(3,1.);
 funz1->SetParLimits(2,0,100);
 funz1->SetParLimits(3,0.,10);
 gG1f->Fit(funz1,"RM+");
 cout << "Chi^2:" << funz1->GetChisquare() << ", number of DoF: " << funz1->GetNDF() << " (Probability: " << funz1->GetProb() << ")."<< endl;
+
+cout<<endl;
+cout<<endl;
+
+
+
+float theta=funz1->GetParameter(1);
+float stheta=funz1->GetParError(1);
+
+cout<<"l'angolo per il quale si ha il picco è: ("<<theta<<"±"<<stheta<<") rad"<<endl;
+
+float lambda=0.154; //nm lunghezza d'onda della radiazione K-alpha (K-beta e il fondo sono stati rimossi mediante un filtro)
+
+float d=lambda/(2*sin(theta));
+
+float sd=abs((lambda/2)*cos(theta)/pow(sin(theta),2))*stheta;
+
+cout<<endl;
+cout<<"la distanza interplanare d vale: ("<<d<<"±"<<sd<<") nm"<<endl;
+/*
 
 
 float angolo2[] ={0.3577924967,0.3665191429,0.3752457892,0.3767031391,0.3781517624,
@@ -138,7 +160,7 @@ funz2->SetParLimits(2,0.,5.);
 funz2->SetParLimits(3,0.,30.);
 gG2f->Fit(funz2,"RM+");
 cout << "Chi^2:" << funz2->GetChisquare() << ", number of DoF: " << funz2->GetNDF() << " (Probability: " << funz2->GetProb() << ")."<< endl;
-
+*/
 
 }
 
