@@ -62,8 +62,8 @@ punti_z->GetXaxis()->SetTitle("z [cm]");
 punti_z->GetYaxis()->SetTitle("B [mT]");
 punti_z->Draw("ALP");
 
-cout<< endl << "------ tried [0]*x+[1] -------";
-TF1 *funz1 = new TF1("funz1","[0]*x+[1]",0.3,1.3);
+cout<< endl << "------ tried [0] z-------";
+TF1 *funz1 = new TF1("funz1","[0]",0.3,1.5);
 
 	funz1->SetParameter(0,0.);
 	funz1->SetParameter(1,180.);
@@ -86,8 +86,8 @@ punti_x->GetXaxis()->SetTitle("x [cm]");
 punti_x->GetYaxis()->SetTitle("B [mT]");
 punti_x->Draw("ALP");
 
-cout<< endl << "------ tried [0]*x+[1] -------";
-TF1 *funz1 = new TF1("funz1","[0]*x+[1]",0.2,1.2);
+cout<< endl << "------ tried [0] x-------";
+TF1 *funz1 = new TF1("funz1","[0]",0.12,1.22);
 
 	funz1->SetParameter(0,0.);
 	funz1->SetParameter(1,180.);
@@ -110,8 +110,8 @@ punti_y->GetXaxis()->SetTitle("y [cm]");
 punti_y->GetYaxis()->SetTitle("B [mT]");
 punti_y->Draw("ALP");
 
-cout<< endl << "------ tried [0]*x+[1] -------";
-TF1 *funz1 = new TF1("funz1","[0]*x+[1]",0.3,1.1);
+cout<< endl << "------ tried [0] y -------";
+TF1 *funz1 = new TF1("funz1","[0]",0.25,1.05);
 
 	funz1->SetParameter(0,0.);
 	funz1->SetParameter(1,180.);
@@ -123,7 +123,7 @@ TF1 *funz1 = new TF1("funz1","[0]*x+[1]",0.3,1.1);
   cout << "X^2: " << funz1->GetChisquare() << ", gradi di liberta': " << funz1->GetNDF() << " (p-value: " << funz1->GetProb() << ")." << endl;
 
 
-/*TF1 *funz1 = new TF1("funz1","[0]*x+[1]",0.,7.22);
+/*TF1 *funz1 = new TF1("funz1","[0]",0.,7.22);
 
 	funz1->SetParameter(0,1.);
 	funz1->SetParameter(1,0.);
