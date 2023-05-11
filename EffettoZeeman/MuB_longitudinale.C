@@ -31,12 +31,12 @@ gG1f->GetYaxis()->SetTitle("E [eV]");
 gG1f->GetXaxis()->SetTitle("B(T)");
 gG1f->Draw("AP");
 
-cout << "\n\n --- Ipotesi  2.0023*[0]*x --- \n" <<endl;
+cout << "\n\n --- Ipotesi [1]+ 2.0023*[0]*x --- \n" <<endl;
 
 
 float start = 0.2;
 float stop = 0.7;
-TF1 *funz1 = new TF1("funz1","2.0023*[0]*x",start, stop);
+TF1 *funz1 = new TF1("funz1","[1]+2.0023*[0]*x",start, stop);
 
 // float r;
 // float x_medio = 0;
