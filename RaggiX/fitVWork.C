@@ -42,12 +42,12 @@ gG1f->GetXaxis()->SetTitle("log(V)");
 gG1f->GetYaxis()->SetTitle("rate");
 gG1f->Draw("AP");
 
-cout << "\n\n --- Ipotesi  [0] --- \n" <<endl;
+cout << "\n\n --- Ipotesi  [0]+[1]*x --- \n" <<endl;
 
 
 float start = 470;
 float stop = 540;
-TF1 *funz1 = new TF1("funz1","[0]",start, stop);
+TF1 *funz1 = new TF1("funz1","[0]+[1]*x",start, stop);
 
 float r;
 float x_medio = 0;
@@ -142,7 +142,7 @@ cout<<"intersection at:"<<intersection<<endl;
 //     << " (Probability: " << funz3->GetProb() << ")."<< endl;
     
 
-TF1 *retta1 = new TF1("retta1"," 1.47047e+003",420,540);
+TF1 *retta1 = new TF1("retta1"," 1.14430e+003+6.59348e-001*x",420,540);
 TF1 *retta2 = new TF1("retta2","-1.44106e+004+3.54466e+001*x",420,460);
 
 
