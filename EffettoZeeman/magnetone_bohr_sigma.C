@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <math.h>
 #include "RooStats/RooStatsUtils.h" //contiene la funzione per calcolare il p-value nel test z
+#include <TLatex.h>
 
 using namespace std;
 
@@ -17,7 +18,9 @@ int n_misure=12;
 
 // ritardi in nanosecondi
 float B[]={608.8,583.5,548.3,527.9,495.7,470,434.4,412.7,348.3,310.6,245.1,218.3};
-float sB[]={16.3,15.1,13.6,12.7,11.5,10.6,9.4,8.8,7,6.1,4.8,4.4};
+
+//float sB[]={16.3,15.1,13.6,12.7,11.5,10.6,9.4,8.8,7,6.1,4.8,4.4}; //queste incertezze erano sbagliate
+float sB[]={17.7 , 16.6 , 15.1 , 14.3 , 13.2 , 12.3 , 11.2 , 10.6 , 8.9 , 8 , 6.6 , 6.1};
 
 /*
 //considero solo le prime 2 stime di csi
@@ -45,45 +48,51 @@ float scsi[]={0.005847641714487,0.07366653751138,0.016306498739486,0.02243511102
 
 
 
-TCanvas *grafico = new TCanvas("grafico","csi/B",200,10,600,400);
+TCanvas *grafico = new TCanvas("grafico","#chi (B)",200,10,600,400);
 grafico->SetFillColor(0);
+grafico->SetGrid();
 grafico->cd();
 TGraphErrors *punti = new TGraphErrors(n_misure,B,csi,sB,scsi);
 punti->SetMarkerSize(0.7);
 punti->SetMarkerStyle(21);
-punti->SetTitle("csi/B");
+punti->SetTitle("#chi (B)");
 punti->GetXaxis()->SetTitle("campo magnetico [mT]");
-punti->GetYaxis()->SetTitle("csi");
+punti->GetYaxis()->SetTitle("#chi");
 punti->Draw("AP");
 
 
 
 
 cout<<"fit con una retta"<<endl;
+
+
 TF1 *funz1 = new TF1("funz1","[0]+[1]*x",100,800);
 
   funz1->SetParameter(0,0);//ci aspettiamo proporzionalità diretta
-  
-  funz1->SetLineColor(3);
+  funz1->SetLineColor(2);
 
 
   punti->Fit(funz1,"RM+");
   cout << "X^2: " << funz1->GetChisquare() << ", gradi di liberta': " << funz1->GetNDF() << " (p-value: " << funz1->GetProb() << ")." << endl;
   
-  float p1=funz1->GetParameter(1)*1000; // il fit lo restituisce in 1/mT , moltoplicando per 1000 lo si trova in 1/T
+  float p1=funz1->GetParameter(1)*1000; // il fit lo restituisce in 1/mT=1000* 1/T , moltoplicando per 1000 lo si trova in J/T
   float sp1=funz1->GetParError(1)*1000;
   
-    cout<<"il coefficiente di proporzionalità vale: ("<<p1<<"±"<<sp1<<") 1/T"<<endl;
-    cout<<endl;
-
-  float k=2.275e-23/2; // hc/2*mu*t*g espresso in J
+  float k=8.79e22; // [1/J] 4*eta*t*g/(h*c)  c'è 4 e non 2 perchè nel Zeeman trasversale il deltaE è doppio: es. 3-(-3)=6 g vale 1 da quanto riportato sulla scheda dell'esperienza
   
-  float m_bohr=k*p1; //misurato in J/T
-  float sm_bohr=k*sp1;
-  float m_bohr_teorico=9.27e-24;
-  
-      cout<<"la stima del magnetone di bohr vale: ("<<m_bohr<<"±"<<sm_bohr<<") 1/T"<<endl;
+  float m_bohr=p1/k;
+  float sm_bohr=sp1/k;
+  float m_bohr_teorico=9.27e-24; //J/T
+    
+      cout<<endl;
+      cout<<endl;
+      cout<<"la stima del magnetone di bohr vale: ("<<m_bohr<<"±"<<sm_bohr<<") J/T"<<endl;
       cout<<"il valore teorico del magnetone di bohr è eh/2Me = 9,27*10^-24 J/T"<<endl;
+      
+      
+      cout<<endl;
+      cout<<endl;
+      
       
       cout<<"Test Z"<<endl;
       float Z=(m_bohr-m_bohr_teorico)/sm_bohr;
